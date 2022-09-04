@@ -13,13 +13,25 @@ const validationSchema = yup.object({
 
 const AddExtraDebtModal = ({ isOpen, onClose, item, onSubmit }) => {
 
-  const { register, formState: { errors }, handleSubmit } = useForm({ resolver: yupResolver(validationSchema) });
+  const { register,
+    reset,
+    formState,
+    formState: { errors, isSubmitSuccessful },
+    handleSubmit } = useForm({ resolver: yupResolver(validationSchema) });
 
 
   const submitHandler = (data) => {
     const newData = { ...item, ...data }
     onSubmit(newData)
+    newData = null
+    onClose()
   }
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset({ extraAmount: null });
+    }
+  }, [formState]);
 
   return <Modal size='xs' isOpen={isOpen} onClose={onClose}>
     <ModalOverlay />
