@@ -24,8 +24,6 @@ const DebtsList = () => {
 
     return (
         <>
-            
-
             <ul className={s.list}>
                 {initialDebts.map(item => {
                     return (

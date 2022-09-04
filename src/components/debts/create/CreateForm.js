@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form";
+import { useToast } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import 'yup-phone';
@@ -25,12 +26,30 @@ const validationSchema = yup.object({
 
 const CreateForm = () => {
     const router = useRouter()
+    const toast = useToast()
 
     const { register, formState: { errors }, handleSubmit } = useForm({ resolver: yupResolver(validationSchema) });
 
 
     const onSubmit = (data) => {
-        addNewDebt(data)
+        addNewDebt(data).then(response => {
+            router.push('/debts')
+            if (response?.data?.status) {
+                toast({
+                    title: response?.data?.message,
+                    status: 'success',
+                    isClosable: true,
+                    position: 'bottom-left'
+                })
+            } else {
+                toast({
+                    title: `Something go wrong`,
+                    status: 'error',
+                    isClosable: true,
+                    position: 'bottom-left'
+                })
+            }
+        })
     }
 
     return (
