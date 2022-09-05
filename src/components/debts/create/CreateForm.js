@@ -43,7 +43,7 @@ const CreateForm = () => {
                 })
             } else {
                 toast({
-                    title: `Something go wrong`,
+                    title: response?.data?.message,
                     status: 'error',
                     isClosable: true,
                     position: 'bottom-left'
